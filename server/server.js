@@ -3,12 +3,11 @@ import log4js from 'log4js';
 import morgan from 'morgan';
 import prometheusMiddleware from 'express-prometheus-middleware';
 import process from 'node:process';
-import { createRequestHandler } from 'react-router';
+import { createRequestHandler } from '@react-router/express';
 
-export const PORT = process.env.PORT || '8000';
-export const BASE_PATH = process.env.BASE_PATH || '/';
-export const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
-// export const USER_API_URL = process.env.USER_API_URL || 'http://localhost:8062';
+const PORT = process.env.PORT || '8000';
+const BASE_PATH = process.env.BASE_PATH || '/';
+const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
 const logger = log4js.getLogger();
 logger.level = LOG_LEVEL;
@@ -34,6 +33,10 @@ const reactRouterHandler = createRequestHandler({
     })(),
 });
 
+const build = viteDevServer
+    ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
+    : await import('../build/server/index.js');
+
 const app = express();
 
 app.use(morgan('combined'));
@@ -53,7 +56,9 @@ if (viteDevServer) {
 }
 app.use(express.static('build/client', { maxAge: '1h' }));
 
-app.all('*', reactRouterHandler);
+app.all('*', createRequestHandler({ build }));
+
+logger.info('BASE_PATH', BASE_PATH);
 
 app.listen(PORT, () => {
     logger.info('LOG_LEVEL', LOG_LEVEL);

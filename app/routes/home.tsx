@@ -1,9 +1,6 @@
 import type { Route } from './+types/home';
 import { Welcome } from '~/welcome/welcome';
-import { Box, Page } from '@navikt/ds-react';
-import type { ReactNode } from 'react';
-import { NovariIKS } from '~/components/images/NovariIKS';
-import Header from '~/components/Header';
+import { fetchConsent } from '~/api/consent';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -26,20 +23,16 @@ export function meta({}: Route.MetaArgs) {
     ];
 }
 
-const Home = ({ children }: { children: ReactNode }) => {
-    return (
-        <Page
-            footer={
-                <Box className={'novari-footer'} padding="8" as="footer">
-                    <NovariIKS width={'9em'} />
-                </Box>
-            }>
-            <Header />
-            <Page.Block as={'main'} gutters>
-                {children}
-            </Page.Block>
-        </Page>
-    );
+export async function loader({ request }: Route.LoaderArgs) {
+    const consents = await fetchConsent(request);
+    console.log(consents);
+    return { consents };
+}
+
+const Home = ({ loaderData }: Route.ComponentProps) => {
+    /*    const { consents } = loaderData;
+    console.log('consents', consents);*/
+    return <Welcome />;
 };
 
 export default Home;

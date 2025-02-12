@@ -12,11 +12,15 @@
         "start": "react-router-serve ./build/server/index.js",
         "typecheck": "react-router typegen && tsc",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "port-user": "kubectl -n fintlabs-no port-forward services/fint-kontroll-user-catalog 8062:8080",
+        "port-consent": "kubectl -n fintlabs-no port-forward services/fint-samtykke-service-backend 8064:8080",
+        "portall": "npm run port-user & npm run port-consent"
     },
     "dependencies": {
         "@navikt/ds-css": "^7.12.2",
         "@navikt/ds-react": "^7.12.2",
+        "@react-router/express": "^7.1.5",
         "@react-router/node": "^7.1.5",
         "@react-router/serve": "^7.1.5",
         "express": "^4.21.2",

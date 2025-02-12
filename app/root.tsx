@@ -13,6 +13,9 @@ import './novari.css';
 import '@navikt/ds-css/dist/index.css';
 import navStyles from '@navikt/ds-css/dist/index.css?url';
 import React from 'react';
+import { Box, Page } from '@navikt/ds-react';
+import { NovariIKS } from '~/components/images/NovariIKS';
+import Header from '~/components/Header';
 
 export const links: Route.LinksFunction = () => [{ rel: 'stylesheet', href: navStyles }];
 
@@ -22,11 +25,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <head>
                 <Meta />
                 <Links />
+                <title>FINT Samtykke</title>
             </head>
             <body data-theme="novari">
-                {children}
-                <ScrollRestoration />
-                <Scripts />
+                <Page
+                    footer={
+                        <Box className={'novari-footer'} padding="8" as="footer">
+                            <NovariIKS width={'9em'} />
+                        </Box>
+                    }>
+                    <Header />
+                    <Page.Block as={'main'} gutters>
+                        {children}
+                        <Outlet />
+                        <ScrollRestoration />
+                        <Scripts />
+                    </Page.Block>
+                </Page>
             </body>
         </html>
     );
@@ -41,7 +56,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     let details = 'An unexpected error occurred.';
     let stack: string | undefined;
 
-    /*
     if (isRouteErrorResponse(error)) {
         message = error.status === 404 ? '404' : 'Error';
         details =
@@ -52,7 +66,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         details = error.message;
         stack = error.stack;
     }
-*/
 
     return (
         <main className="pt-16 p-4 container mx-auto">
