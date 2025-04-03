@@ -1,6 +1,8 @@
 import type { Route } from './+types/home';
 import { Welcome } from '~/welcome/welcome';
-import { fetchConsent } from '~/api/consent';
+import { fetchConsent } from '~/api/fetch-consent';
+import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+import { ConsentTable } from '~/components/ConsentTable';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -30,9 +32,15 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 const Home = ({ loaderData }: Route.ComponentProps) => {
-    /*    const { consents } = loaderData;
-    console.log('consents', consents);*/
-    return <Welcome />;
+    const { consents } = loaderData;
+    console.log('consents', consents);
+    return (
+        <VStack gap={'4'} paddingBlock={'12'}>
+            <Heading size="large">Velkommen til FINT Samtykke</Heading>
+            <BodyShort> Denne siden gir deg oversikt over dine samtykker</BodyShort>
+            <ConsentTable consents={consents} />
+        </VStack>
+    );
 };
 
 export default Home;

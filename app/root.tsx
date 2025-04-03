@@ -37,7 +37,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <Header />
                     <Page.Block as={'main'} gutters>
                         {children}
-                        <Outlet />
                         <ScrollRestoration />
                         <Scripts />
                     </Page.Block>

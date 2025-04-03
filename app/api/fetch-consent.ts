@@ -1,5 +1,7 @@
+// @ts-ignore
 import { API_BASE_PATH, CONSENT_API_URL } from '../../environment.js';
 import logger from '~/api/logger';
+import type { Consent } from '~/utils/types';
 
 export const fetchData = async (
     url: string,
@@ -14,6 +16,7 @@ export const fetchData = async (
                 Authorization: `Bearer ${request.headers.get('Authorization')}`,
             },
         });
+        console.log('response', response);
         return handleResponse(response, defaultErrorMessage);
     } catch (error) {
         throw new Error('Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen.');
@@ -31,9 +34,10 @@ export const handleResponse = async (response: Response, errorMessage: string) =
     throw new Error(`${response.status} - ${response.statusText}`);
 };
 
-export const fetchConsent = async (request: Request): Promise<any> => {
+export const fetchConsent = async (request: Request): Promise<Consent[]> => {
+    console.log('fetchConsent', `${CONSENT_API_URL}/api/consents`);
     return fetchData(
-        `${CONSENT_API_URL}${API_BASE_PATH}/api/consents`,
+        `${CONSENT_API_URL}/api/consents`,
         request,
         'En feil oppstod når vi hentet informasjon om deg, vennligst sjekk at du er logget inn.'
     );

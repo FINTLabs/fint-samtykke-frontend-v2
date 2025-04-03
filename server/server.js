@@ -12,10 +12,12 @@ const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 const logger = log4js.getLogger();
 logger.level = LOG_LEVEL;
 
-logger.info(`Running in ${process.env.NODE_ENV === 'production' ? 'production' : 'dev'} mode`);
+const isProduction = process.env.NODE_ENV === 'production';
+
+logger.info(`Running in ${isProduction ? 'production' : 'dev'} mode`);
 
 const viteDevServer = await (async () => {
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
         return null;
     }
     const vite = await import('vite');
@@ -23,15 +25,6 @@ const viteDevServer = await (async () => {
         server: { middlewareMode: true },
     });
 })();
-
-const reactRouterHandler = createRequestHandler({
-    build: await (async () => {
-        if (viteDevServer) {
-            return viteDevServer.ssrLoadModule('virtual:react-router/server-build');
-        }
-        return import('../build/server/index.js');
-    })(),
-});
 
 const build = viteDevServer
     ? () => viteDevServer.ssrLoadModule('virtual:react-router/server-build')
