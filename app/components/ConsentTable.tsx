@@ -8,8 +8,6 @@ export const ConsentTable = ({ consents }: { consents: Consent[] }) => {
     );
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>, consent: Consent) => {
-        console.log('activeConsents', activeConsents);
-        console.log('consent', consent);
         const checkedValue = e.target.value;
         const isChecked = e.target.checked;
         const newActiveConsents = isChecked
@@ -17,12 +15,9 @@ export const ConsentTable = ({ consents }: { consents: Consent[] }) => {
             : activeConsents.filter((x) => x !== checkedValue);
         setActiveConsents(newActiveConsents);
 
-        if (consent.expirationDate === null || consent.active === undefined) {
+        if (consent.expirationDate === null) {
             // create consent
-        } else if (
-            consent.expirationDate !== null &&
-            (consent.active === true || consent.active === false)
-        ) {
+        } else {
             // update consent
         }
     };

@@ -1,5 +1,4 @@
 import type { Route } from './+types/home';
-import { Welcome } from '~/welcome/welcome';
 import { fetchConsent } from '~/api/fetch-consent';
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
@@ -27,13 +26,11 @@ export function meta({}: Route.MetaArgs) {
 
 export async function loader({ request }: Route.LoaderArgs) {
     const consents = await fetchConsent(request);
-    console.log(consents);
     return { consents };
 }
 
 const Home = ({ loaderData }: Route.ComponentProps) => {
     const { consents } = loaderData;
-    console.log('consents', consents);
     return (
         <VStack gap={'4'} paddingBlock={'12'}>
             <Heading size="large">Velkommen til FINT Samtykke</Heading>
