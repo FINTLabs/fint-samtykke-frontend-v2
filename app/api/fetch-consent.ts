@@ -1,5 +1,7 @@
-import { API_BASE_PATH, CONSENT_API_URL } from '../../environment.js';
+// @ts-ignore
+import { CONSENT_API_URL } from '../../environment.js';
 import logger from '~/api/logger';
+import type { Consent } from '~/utils/types';
 
 export const fetchData = async (
     url: string,
@@ -31,9 +33,9 @@ export const handleResponse = async (response: Response, errorMessage: string) =
     throw new Error(`${response.status} - ${response.statusText}`);
 };
 
-export const fetchConsent = async (request: Request): Promise<any> => {
+export const fetchConsent = async (request: Request): Promise<Consent[]> => {
     return fetchData(
-        `${CONSENT_API_URL}${API_BASE_PATH}/api/consents`,
+        `${CONSENT_API_URL}/api/consents`,
         request,
         'En feil oppstod når vi hentet informasjon om deg, vennligst sjekk at du er logget inn.'
     );
