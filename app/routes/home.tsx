@@ -1,7 +1,9 @@
 import type { Route } from './+types/home';
-import { fetchConsent } from '~/api/fetch-consent';
+import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent';
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
+import type { Consent } from '~/utils/types';
+import { useSubmit, type ActionFunctionArgs, useActionData } from 'react-router';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -31,13 +33,40 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 const Home = ({ loaderData }: Route.ComponentProps) => {
     const { consents } = loaderData;
+    const submit = useSubmit();
+
+    const handleSubmit = (consent: Consent, isActive: boolean) => {
+        const formData = new FormData();
+        formData.append('processingId', consent.processing.systemId.identifikatorverdi);
+        formData.append('consentId', consent.systemIdValue);
+        formData.append('isActive', String(isActive));
+        if (consent.expirationDate === null) {
+            submit(formData, { method: 'post' });
+        } else {
+            submit(formData, { method: 'put' });
+        }
+    };
     return (
         <VStack gap={'4'} paddingBlock={'12'}>
             <Heading size="large">Velkommen til FINT Samtykke</Heading>
             <BodyShort> Denne siden gir deg oversikt over dine samtykker</BodyShort>
-            <ConsentTable consents={consents} />
+            <ConsentTable consents={consents} handleSubmit={handleSubmit} />
         </VStack>
     );
 };
 
 export default Home;
+
+export async function action({ request }: ActionFunctionArgs) {
+    const formData = await request.formData();
+    const processingId = String(formData.get('processingId'));
+    const consentId = String(formData.get('consentId'));
+    const isActive = String(formData.get('isActive'));
+    if (processingId) {
+        if (request.method === 'POST') {
+            createConsent(request, processingId);
+        } else if (request.method === 'PUT') {
+            updateConsent(request, processingId, consentId, isActive);
+        }
+    }
+}
