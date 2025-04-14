@@ -34,3 +34,10 @@ patches:
     target:
       kind: FLAISSso
       name: fint-samtykke-sso
+  - patch: |-
+      - op: replace
+        path: "/spec/image"
+        value: ghcr.io/fintlabs/fint-samtykke-frontend-v2-rogfk_no-api
+    target:
+      kind: Application
+      name: fint-samtykke-frontend-v2

@@ -5,11 +5,11 @@ metadata:
   labels:
     app.kubernetes.io/name: fint-samtykke-frontend-v2
     app.kubernetes.io/component: frontend
-    app.kubernetes.io/instance: fint-samtykke-frontend_rogfk_no
+    app.kubernetes.io/instance: fint-samtykke-frontend-v2_rogfk_no-beta
 spec:
   port: 8000
   orgId: fylke.no
-  image: ghcr.io/fintlabs/fint-samtykke-frontend-v2
+  image: ghcr.io/fintlabs/fint-samtykke-frontend-v2-rogfk_no-beta
   imagePullPolicy: Always
   url:
     hostname: samtykke.vigoiks.no
