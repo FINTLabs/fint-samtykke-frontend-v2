@@ -2,7 +2,13 @@ import type { Consent } from '~/utils/types';
 import { Switch, Table } from '@navikt/ds-react';
 import { type ChangeEvent, useState } from 'react';
 
-export const ConsentTable = ({ consents }: { consents: Consent[] }) => {
+export const ConsentTable = ({
+    consents,
+    handleSubmit,
+}: {
+    consents: Consent[];
+    handleSubmit: (consent: Consent, isActive: boolean) => void;
+}) => {
     const [activeConsents, setActiveConsents] = useState<string[]>(
         consents.filter((x) => x.active).map((x) => x.systemIdValue)
     );
@@ -14,12 +20,7 @@ export const ConsentTable = ({ consents }: { consents: Consent[] }) => {
             ? [...activeConsents, checkedValue]
             : activeConsents.filter((x) => x !== checkedValue);
         setActiveConsents(newActiveConsents);
-
-        if (consent.expirationDate === null) {
-            // create consent
-        } else {
-            // update consent
-        }
+        handleSubmit(consent, isChecked);
     };
 
     return (

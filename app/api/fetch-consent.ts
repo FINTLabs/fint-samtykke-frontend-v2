@@ -1,37 +1,7 @@
 // @ts-ignore
 import { CONSENT_API_URL } from '../../environment.js';
-import logger from '~/api/logger';
 import type { Consent } from '~/utils/types';
-
-export const fetchData = async (
-    url: string,
-    request: Request,
-    defaultErrorMessage = 'En feil oppstod under henting av data'
-) => {
-    try {
-        logger.info(`GET request to url:`, url);
-        const response = await fetch(url, {
-            headers: {
-                ...request.headers,
-                Authorization: `Bearer ${request.headers.get('Authorization')}`,
-            },
-        });
-        return handleResponse(response, defaultErrorMessage);
-    } catch (error) {
-        throw new Error('Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen.');
-    }
-};
-
-export const handleResponse = async (response: Response, errorMessage: string) => {
-    if (response.ok) return response.json();
-    if (response.status === 403)
-        throw new Error(
-            'Det ser ut som om du mangler rettigheter til den dataen du prøver å hente.'
-        );
-    if (response.status === 401)
-        throw new Error('Påloggingen din er utløpt, vennligst logg inn på nytt.');
-    throw new Error(`${response.status} - ${response.statusText}`);
-};
+import { fetchData, handleResponse, sendRequest } from '~/api/utils';
 
 export const fetchConsent = async (request: Request): Promise<Consent[]> => {
     return fetchData(
@@ -39,4 +9,34 @@ export const fetchConsent = async (request: Request): Promise<Consent[]> => {
         request,
         'En feil oppstod når vi hentet informasjon om deg, vennligst sjekk at du er logget inn.'
     );
+};
+
+export const createConsent = async (reqest: Request, processingId: string): Promise<Response> => {
+    console.log('createConsent', `${CONSENT_API_URL}/api/consents/${processingId}`);
+    const response = await sendRequest({
+        url: `${CONSENT_API_URL}/api/consents/${processingId}`,
+        method: 'POST',
+        token: reqest.headers.get('Authorization'),
+    });
+
+    return handleResponse(response, 'Kunne ikke opprette samtykke');
+};
+
+export const updateConsent = async (
+    reqest: Request,
+    processingId: string,
+    consentId: string,
+    isActive: string
+): Promise<Response> => {
+    console.log(
+        'updateConsent',
+        `${CONSENT_API_URL}/api/consents/${consentId}/${processingId}/${isActive}`
+    );
+    const response = await sendRequest({
+        url: `${CONSENT_API_URL}/api/consents/${consentId}/${processingId}/${isActive}`,
+        method: 'PUT',
+        token: reqest.headers.get('Authorization'),
+    });
+
+    return handleResponse(response, 'Kunne ikke oppdatere samtykke');
 };
