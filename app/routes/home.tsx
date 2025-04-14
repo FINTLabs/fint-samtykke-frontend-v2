@@ -3,7 +3,7 @@ import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent'
 import { BodyShort, Heading, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import type { Consent } from '~/utils/types';
-import { useSubmit, type ActionFunctionArgs } from 'react-router';
+import { useSubmit, type ActionFunctionArgs, useActionData } from 'react-router';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -36,16 +36,13 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
     const submit = useSubmit();
 
     const handleSubmit = (consent: Consent, isActive: boolean) => {
-        console.log('handleSubmit', consent);
         const formData = new FormData();
         formData.append('processingId', consent.processing.systemId.identifikatorverdi);
         formData.append('consentId', consent.systemIdValue);
         formData.append('isActive', String(isActive));
         if (consent.expirationDate === null) {
-            console.log('create consent');
             submit(formData, { method: 'post' });
         } else {
-            console.log('update consent');
             submit(formData, { method: 'put' });
         }
     };
@@ -67,11 +64,9 @@ export async function action({ request }: ActionFunctionArgs) {
     const isActive = String(formData.get('isActive'));
     if (processingId) {
         if (request.method === 'POST') {
-            const response = await createConsent(request, processingId);
-            return { didUpdate: !!response };
+            createConsent(request, processingId);
         } else if (request.method === 'PUT') {
-            const response = await updateConsent(request, processingId, consentId, isActive);
-            return { didUpdate: response.status === 204 };
+            updateConsent(request, processingId, consentId, isActive);
         }
     }
 }

@@ -30,16 +30,16 @@ export const ConsentTable = ({
                     <Table.HeaderCell>Tjeneste</Table.HeaderCell>
                     <Table.HeaderCell>Personopplysning</Table.HeaderCell>
                     <Table.HeaderCell>Formål</Table.HeaderCell>
-                    <Table.HeaderCell align={'right'}>Samtykke</Table.HeaderCell>
+                    <Table.HeaderCell>Samtykke</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {consents.map((consent) => (
-                    <Table.Row>
+                {consents.map((consent, key) => (
+                    <Table.Row key={key}>
                         <Table.DataCell>{consent.processorName}</Table.DataCell>
                         <Table.DataCell>{consent.personalDataName}</Table.DataCell>
                         <Table.DataCell>{consent.processing.formal}</Table.DataCell>
-                        <Table.DataCell align={'right'}>
+                        <Table.DataCell>
                             <Switch
                                 value={consent.systemIdValue}
                                 checked={activeConsents.includes(consent.systemIdValue)}

@@ -19,7 +19,7 @@ export const fetchData = async (
     }
 };
 
-export const handleResponse = async (response: Response, errorMessage: string) => {
+export const handleResponse = async (response: Response, errorMessage: string): Promise<any> => {
     if (response.ok) return response.json();
     if (response.status === 403)
         throw new Error(

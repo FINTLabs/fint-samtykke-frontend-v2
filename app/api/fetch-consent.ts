@@ -11,7 +11,8 @@ export const fetchConsent = async (request: Request): Promise<Consent[]> => {
     );
 };
 
-export const createConsent = async (reqest: Request, processingId: string): Promise<Response> => {
+export const createConsent = async (reqest: Request, processingId: string): Promise<Consent> => {
+    //TODO: remove this
     console.log('createConsent', `${CONSENT_API_URL}/api/consents/${processingId}`);
     const response = await sendRequest({
         url: `${CONSENT_API_URL}/api/consents/${processingId}`,
@@ -27,7 +28,8 @@ export const updateConsent = async (
     processingId: string,
     consentId: string,
     isActive: string
-): Promise<Response> => {
+): Promise<Consent> => {
+    //TODO: remove this
     console.log(
         'updateConsent',
         `${CONSENT_API_URL}/api/consents/${consentId}/${processingId}/${isActive}`
