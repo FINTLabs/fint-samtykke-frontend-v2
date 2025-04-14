@@ -1,0 +1,17 @@
+name: Cluster Deploy
+
+on:
+  workflow_call:
+    inputs:
+      org:
+        description: 'Organisation'
+        required: true
+        type: string
+      environment:
+        description: 'Environment'
+        required: true
+        type: string
+      image-tags:
+        description: 'Docker image with tag'
+        required: true
+        type: string

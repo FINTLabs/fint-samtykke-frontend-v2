@@ -1,0 +1,8 @@
+name: Build and Publish
+
+on:
+  workflow_call:
+    outputs:
+      image-tags:
+        description: "Docker image with tag"
+        value: ${{ jobs.publish.outputs.image-tags }}

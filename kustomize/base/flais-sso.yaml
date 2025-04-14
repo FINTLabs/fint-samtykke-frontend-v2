@@ -1,0 +1,18 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: FLAISSso
+metadata:
+  name: fint-samtykke-sso
+  labels:
+    app.kubernetes.io/component: sso
+    app.kubernetes.io/name: fint-samtykke-sso
+    app.kubernetes.io/instance: fint-samtykke-sso_fylke
+spec:
+  hostname: samtykke.vigoiks.no
+  basePath: path
+
+
+
+
+
+
+

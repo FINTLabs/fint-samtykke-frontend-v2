@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rogfk-no
+resources:
+  - ../../../base
+commonLabels:
+  app.kubernetes.io/instance: fint-samtykke-frontend-v2_rogfk_no
+  fintlabs.no/org-id: rogfk.no
+patches:
+  - patch: |-
+      - op: replace
+        path: "/spec/orgId"
+        value: "rogfk.no"
+      - op: replace
+        path: "/spec/url/basePath"
+        value: "/beta/rogfk-no"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: BASE_PATH
+          value: "/beta/rogfk-no"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: CONSENT_API_URL
+          value: http://fint-samtykke-service-backend:8080
+    target:
+      kind: Application
+      name: fint-samtykke-frontend-v2
+  - patch: |-
+      - op: replace
+        path: "/spec/basePath"
+        value: "/beta/rogfk-no"
+    target:
+      kind: FLAISSso
+      name: fint-samtykke-sso

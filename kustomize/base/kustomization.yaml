@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - flais-sso.yaml
+  - application.yaml
+commonLabels:
+  app.kubernetes.io/version: "latest"
+  app.kubernetes.io/part-of: fint-samtykke
+  fintlabs.no/team: bas
+  fintlabs.no/org-id: fintlabs.no
