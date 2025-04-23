@@ -37,7 +37,7 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/image"
-        value: ghcr.io/fintlabs/fint-samtykke-frontend-v2-rogfk_no-beta
+        value: ghcr.io/fintlabs/fint-samtykke-frontend-v2
     target:
       kind: Application
       name: fint-samtykke-frontend-v2

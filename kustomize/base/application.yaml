@@ -9,7 +9,7 @@ metadata:
 spec:
   port: 8000
   orgId: fylke.no
-  image: ghcr.io/fintlabs/fint-samtykke-frontend-v2-rogfk_no-beta
+  image: ghcr.io/fintlabs/fint-samtykke-frontend-v2
   imagePullPolicy: Always
   url:
     hostname: samtykke.vigoiks.no

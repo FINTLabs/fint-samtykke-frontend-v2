@@ -89,7 +89,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ inputs.org }}-${{ inputs.environment }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix={{date 'YYYY.MM.DD-HH.mm'}}-,priority=9002
       - name: Build and push Docker image
