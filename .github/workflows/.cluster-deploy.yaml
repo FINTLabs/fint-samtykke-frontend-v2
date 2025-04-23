@@ -16,32 +16,10 @@ on:
         required: true
         type: string
 
-
 jobs:
-  set-cluster:
-    name: Set Cluster
-    runs-on: ubuntu-latest
-    outputs:
-      cluster: ${{ steps.set-cluster.outputs.cluster }}
-    steps:
-      - name: Determine cluster based on environment
-        id: set-cluster
-        run: |
-          if [[ "${{ inputs.environment }}" == "beta" ]]; then
-            echo "::set-output name=cluster::aks-beta-fint-2021-11-23"
-          elif [[ "${{ inputs.environment }}" == "api" ]]; then
-            echo "::set-output name=cluster::aks-api-fint-2022-02-08"
-          else
-            echo "Unknown environment: ${{ inputs.environment }}"
-            exit 1
-          fi
-      - name: Log the determined cluster
-        run: echo "Cluster:${{ steps.set-cluster.outputs.cluster }}"
-
   deploy-to-cluster:
     name: Deploy to Cluster
     runs-on: ubuntu-latest
-    needs: set-cluster
     permissions:
       contents: read
     steps:
@@ -55,10 +33,6 @@ jobs:
           renderEngine: "kustomize"
           kustomizationPath: "kustomize/overlays/${{ inputs.environment }}/${{ inputs.org }}"
 
-      - uses: azure/use-kubelogin@v1.1
-        with:
-          kubelogin-version: 'v0.0.26'
-
       - uses: azure/login@v2
         with:
           creds: "${{ secrets[format('AKS_{0}_FINT_GITHUB', inputs.environment)] }}"
@@ -66,8 +40,9 @@ jobs:
       - name: Set the target cluster
         uses: azure/aks-set-context@v4
         with:
-          cluster-name: "${{ needs.set-cluster.outputs.cluster }}"
-          resource-group: "rg-aks-${{ inputs.environment }}"
+          cluster-name: "${{ vars[format('{0}_CLUSTER_NAME', inputs.environment)] }}"
+          resource-group: "${{ vars[format('{0}_CLUSTER_RESOURCE_GROUP', inputs.environment)] }}"
+          admin: 'true'
           use-kubelogin: 'true'
 
       - name: Deploy
