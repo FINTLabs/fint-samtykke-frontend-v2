@@ -1,0 +1,24 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: fint-samtykke-frontend-v2
+  labels:
+    app.kubernetes.io/name: fint-samtykke-frontend-v2
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/instance: fint-samtykke-frontend-v2_dummy
+    app.kubernetes.io/part-of: fint-samtykke
+    fintlabs.no/team: bas
+    fintlabs.no/org-id: fylke.no
+spec:
+  port: 8000
+  orgId: fylke.no
+  image: ghcr.io/fintlabs/fint-samtykke-frontend-v2
+  imagePullPolicy: Always
+  url:
+    hostname: samtykke.vigoiks.no
+    basePath: /beta/fylke
+  ingress:
+    enabled: true
+    middlewares:
+      - fint-samtykke-sso
+  env: []
