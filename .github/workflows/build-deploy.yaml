@@ -25,13 +25,11 @@ permissions:
 
 jobs:
   build-publish:
-    name: Build and Publish
-    uses: ./.build-publish.yaml
+    uses: ./.github/workflows/.build-publish.yaml
     secrets: inherit
 
   cluster-deploy:
-    name: Deploy to AKS
-    uses: ./.cluster-deploy.yaml
+    uses: ./.github/workflows/.cluster-deploy.yaml
     needs: build-publish
     secrets: inherit
     with:
