@@ -5,6 +5,4 @@ resources:
   - application.yaml
 commonLabels:
   app.kubernetes.io/version: "latest"
-  app.kubernetes.io/part-of: fint-samtykke
-  fintlabs.no/team: bas
   fintlabs.no/org-id: fintlabs.no
