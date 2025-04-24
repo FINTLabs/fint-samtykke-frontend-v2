@@ -20,7 +20,7 @@ Start the development mockServer with HMR:
 npm run dev:mock
 ```
 
-Your application will be available at `http://localhost:8000`.
+Your application will be available at `http://localhost:3000`.
 
 ## Building for Production
 

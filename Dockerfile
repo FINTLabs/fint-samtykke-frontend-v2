@@ -8,6 +8,6 @@ COPY node_modules/ node_modules/
 COPY package.json ./
 COPY environment.js ./
 
-EXPOSE 8000
+EXPOSE 3000
 
 CMD ["npm", "run", "start"]

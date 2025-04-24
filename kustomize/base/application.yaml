@@ -10,7 +10,7 @@ metadata:
     fintlabs.no/team: bas
     fintlabs.no/org-id: fylke.no
 spec:
-  port: 8000
+  port: 3000
   orgId: fylke.no
   image: ghcr.io/fintlabs/fint-samtykke-frontend-v2
   imagePullPolicy: Always

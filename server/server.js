@@ -5,7 +5,7 @@ import prometheusMiddleware from 'express-prometheus-middleware';
 import process from 'node:process';
 import { createRequestHandler } from '@react-router/express';
 
-const PORT = process.env.PORT || '8000';
+const PORT = process.env.PORT || '3000';
 const BASE_PATH = process.env.BASE_PATH || '/';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
