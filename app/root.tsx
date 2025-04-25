@@ -5,7 +5,6 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
-    useRouteError,
 } from 'react-router';
 
 import type { Route } from './+types/root';
@@ -70,7 +69,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     }
 
     return (
-        <main className="pt-16 p-4 container mx-auto">
+        <div>
             <h1>{message}</h1>
             <p>{details}</p>
             {stack && (
@@ -78,6 +77,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
                     <code>{stack}</code>
                 </pre>
             )}
-        </main>
+        </div>
     );
 }
