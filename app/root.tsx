@@ -5,6 +5,7 @@ import {
     Outlet,
     Scripts,
     ScrollRestoration,
+    useRouteError,
 } from 'react-router';
 
 import type { Route } from './+types/root';
@@ -56,11 +57,13 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     let stack: string | undefined;
 
     if (isRouteErrorResponse(error)) {
-        message = error.status === 404 ? '404' : 'Error';
-        details =
-            error.status === 404
-                ? 'The requested page could not be found.'
-                : error.statusText || details;
+        if (error.status === 404) {
+            message = 'Vi kunne ikke finne siden du ser etter.';
+            details = error.data || 'Gå tilbake til hovedsiden og prøv igjen';
+        } else if (error.status === 500) {
+            message = 'Serverfeil';
+            details = error.data || 'Kunne ikke kontakte serveren.';
+        }
     } else if (import.meta.env.DEV && error && error instanceof Error) {
         details = error.message;
         stack = error.stack;

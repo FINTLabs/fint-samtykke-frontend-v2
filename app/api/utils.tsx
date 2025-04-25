@@ -15,7 +15,16 @@ export const fetchData = async (
         });
         return handleResponse(response, defaultErrorMessage);
     } catch (error) {
-        throw new Error('Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen.');
+        const statusText =
+            error instanceof Response
+                ? error.statusText
+                : error instanceof Error
+                  ? error.message
+                  : 'Ukjent feil';
+        throw new Response('Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen.', {
+            status: 500,
+            statusText: statusText,
+        });
     }
 };
 
