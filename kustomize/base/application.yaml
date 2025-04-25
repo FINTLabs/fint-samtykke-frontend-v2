@@ -18,6 +18,7 @@ spec:
     hostname: samtykke.vigoiks.no
     basePath: /beta/fylke
   ingress:
+    basePath: /beta/fylke
     enabled: true
     middlewares:
       - fint-samtykke-sso
