@@ -42,11 +42,13 @@ app.use(
     })
 );
 
-if (viteDevServer) {
-    app.use(viteDevServer.middlewares);
-} else {
-    app.use('/assets', express.static('build/client/assets', { immutable: true, maxAge: '1y' }));
-}
+app.use(
+    BASE_PATH.replace(/\/$/, ''),
+    viteDevServer
+        ? viteDevServer.middlewares
+        : express.static('build/client/assets', { immutable: true, maxAge: '1y' })
+);
+
 app.use(express.static('build/client', { maxAge: '1h' }));
 
 app.all('*', createRequestHandler({ build }));
@@ -55,5 +57,5 @@ logger.info('BASE_PATH', BASE_PATH);
 
 app.listen(PORT, () => {
     logger.info('LOG_LEVEL', LOG_LEVEL);
-    logger.info(`App listening on http://localhost:${PORT}${BASE_PATH}`);
+    logger.info(`App listening on http://localhost:${PORT}${BASE_PATH.replace(/\/$/, '')}`);
 });
