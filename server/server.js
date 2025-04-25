@@ -51,7 +51,7 @@ app.use(
 
 app.use(express.static('build/client', { maxAge: '1h' }));
 
-app.all('*', createRequestHandler({ build }));
+app.all(`${BASE_PATH.replace(/\/$/, '')}(/*)?`, createRequestHandler({ build }));
 
 logger.info('BASE_PATH', BASE_PATH);
 
