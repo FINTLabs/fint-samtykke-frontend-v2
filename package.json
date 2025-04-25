@@ -10,7 +10,7 @@
         "dev": "react-router dev",
         "dev:server": "node server/server.js",
         "dev:mock": "cross-env USE_MOCKS=true node server/server.js",
-        "start": "react-router-serve ./build/server/index.js",
+        "start": "cross-env NODE_ENV=production node server/server.js",
         "typecheck": "react-router typegen && tsc",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
