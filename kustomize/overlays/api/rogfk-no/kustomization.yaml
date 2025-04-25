@@ -24,6 +24,9 @@ patches:
         value:
           name: CONSENT_API_URL
           value: http://fint-samtykke-service-backend:8080
+      - op: replace
+        path: "/spec/image"
+        value: ghcr.io/fintlabs/fint-samtykke-frontend-v2
     target:
       kind: Application
       name: fint-samtykke-frontend-v2
@@ -34,10 +37,3 @@ patches:
     target:
       kind: FLAISSso
       name: fint-samtykke-sso
-  - patch: |-
-      - op: replace
-        path: "/spec/image"
-        value: ghcr.io/fintlabs/fint-samtykke-frontend-v2
-    target:
-      kind: Application
-      name: fint-samtykke-frontend-v2
