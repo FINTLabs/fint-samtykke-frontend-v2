@@ -2,6 +2,11 @@ name: Build and Publish
 
 on:
   workflow_call:
+    inputs:
+      base_path:
+        description: 'Base path'
+        required: true
+        type: string
     outputs:
       image-tags:
         description: "Docker image with tag"
@@ -36,7 +41,7 @@ jobs:
         if: steps.cache-node.outputs.cache-hit != 'true'
 
       - name: Build project
-        run: npm run build
+        run: BASE_PATH=${{ inputs.base_path }} npm run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

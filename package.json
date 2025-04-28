@@ -6,7 +6,7 @@
         "react": "$react"
     },
     "scripts": {
-        "build": "cross-env NODE_ENV=production react-router build",
+        "build": "cross-env NODE_ENV=production react-router vite:build",
         "dev": "react-router dev",
         "dev:server": "node server/server.js",
         "dev:mock": "cross-env USE_MOCKS=true node server/server.js",

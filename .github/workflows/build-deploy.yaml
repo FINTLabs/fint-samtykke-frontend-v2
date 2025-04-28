@@ -27,6 +27,8 @@ jobs:
   build-publish:
     uses: ./.github/workflows/.build-publish.yaml
     secrets: inherit
+    with:
+      base_path: "${{ inputs.environment == 'beta' && '/beta' || '' }}/${{ inputs.org }}"
 
   cluster-deploy:
     uses: ./.github/workflows/.cluster-deploy.yaml
