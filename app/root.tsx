@@ -1,13 +1,13 @@
 import {
     isRouteErrorResponse,
     Links,
+    type LinksFunction,
     Meta,
     Outlet,
     Scripts,
     ScrollRestoration,
 } from 'react-router';
 
-import type { Route } from './+types/root';
 import './novari.css';
 
 import '@navikt/ds-css/dist/index.css';
@@ -18,7 +18,7 @@ import { Box, Page } from '@navikt/ds-react';
 import { NovariIKS } from '~/components/images/NovariIKS';
 import Header from '~/components/Header';
 
-export const links: Route.LinksFunction = () => [
+export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: navStyles, type: 'text/css' },
     { rel: 'stylesheet', href: novariSTyles, type: 'text/css' },
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
@@ -55,7 +55,7 @@ export default function App() {
     return <Outlet />;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+export function ErrorBoundary({ error }: { error: unknown }) {
     let message = 'Oops!';
     let details = 'An unexpected error occurred.';
     let stack: string | undefined;
