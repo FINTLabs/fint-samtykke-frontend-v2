@@ -12,12 +12,17 @@ import './novari.css';
 
 import '@navikt/ds-css/dist/index.css';
 import navStyles from '@navikt/ds-css/dist/index.css?url';
+import novariSTyles from './novari.css?url';
 import React from 'react';
 import { Box, Page } from '@navikt/ds-react';
 import { NovariIKS } from '~/components/images/NovariIKS';
 import Header from '~/components/Header';
 
-export const links: Route.LinksFunction = () => [{ rel: 'stylesheet', href: navStyles }];
+export const links: Route.LinksFunction = () => [
+    { rel: 'stylesheet', href: navStyles, type: 'text/css' },
+    { rel: 'stylesheet', href: novariSTyles, type: 'text/css' },
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+];
 
 export function Layout({ children }: { children: React.ReactNode }) {
     return (

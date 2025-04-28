@@ -21,6 +21,6 @@ function mockServerPlugin() {
 }
 
 export default defineConfig({
-    base: `${BASE_PATH === '/' ? '' : BASE_PATH}/`,
+    base: `${BASE_PATH.replace(/\/$/, '')}/`,
     plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), mockServerPlugin()],
 });
