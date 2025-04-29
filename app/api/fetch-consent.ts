@@ -2,8 +2,11 @@
 import { CONSENT_API_URL } from '../../environment.js';
 import type { Consent } from '~/utils/types';
 import { fetchData, handleResponse, sendRequest } from '~/api/utils';
+import logger from '~/api/logger';
 
 export const fetchConsent = async (request: Request): Promise<Consent[]> => {
+    //TODO: remove this
+    logger.info('fetchConsent', `${CONSENT_API_URL}/api/consents`);
     return fetchData(
         `${CONSENT_API_URL}/api/consents`,
         request,
@@ -13,7 +16,7 @@ export const fetchConsent = async (request: Request): Promise<Consent[]> => {
 
 export const createConsent = async (reqest: Request, processingId: string): Promise<Consent> => {
     //TODO: remove this
-    console.log('createConsent', `${CONSENT_API_URL}/api/consents/${processingId}`);
+    logger.info('createConsent', `${CONSENT_API_URL}/api/consents/${processingId}`);
     const response = await sendRequest({
         url: `${CONSENT_API_URL}/api/consents/${processingId}`,
         method: 'POST',
@@ -30,7 +33,7 @@ export const updateConsent = async (
     isActive: string
 ): Promise<Consent> => {
     //TODO: remove this
-    console.log(
+    logger.info(
         'updateConsent',
         `${CONSENT_API_URL}/api/consents/${consentId}/${processingId}/${isActive}`
     );

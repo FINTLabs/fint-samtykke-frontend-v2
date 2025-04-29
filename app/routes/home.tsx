@@ -1,9 +1,10 @@
 import type { Route } from './+types/home';
 import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent';
-import { BodyShort, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import type { Consent } from '~/utils/types';
-import { useSubmit, type ActionFunctionArgs, useActionData } from 'react-router';
+import { useSubmit, type ActionFunctionArgs } from 'react-router';
+import React from 'react';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -69,4 +70,22 @@ export async function action({ request }: ActionFunctionArgs) {
             updateConsent(request, processingId, consentId, isActive);
         }
     }
+}
+
+export function ErrorBoundary({ error }: { error: unknown }) {
+    return (
+        <Box paddingBlock="8">
+            <Alert variant="error">
+                Det oppsto en feil med følgende melding:
+                {error instanceof Error ? (
+                    <>
+                        <div>{error.message}</div>
+                        <div>{(error as any).data}</div>
+                    </>
+                ) : (
+                    <div>Ukjent feil</div>
+                )}
+            </Alert>
+        </Box>
+    );
 }

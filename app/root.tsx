@@ -62,10 +62,10 @@ export function ErrorBoundary({ error }: { error: unknown }) {
 
     if (isRouteErrorResponse(error)) {
         if (error.status === 404) {
-            message = 'Vi kunne ikke finne siden du ser etter.';
+            message = '404: Vi kunne ikke finne siden du ser etter.';
             details = error.data || 'Gå tilbake til hovedsiden og prøv igjen';
         } else if (error.status === 500) {
-            message = 'Serverfeil';
+            message = '500: Serverfeil';
             details = error.data || 'Kunne ikke kontakte serveren.';
         }
     } else if (import.meta.env.DEV && error && error instanceof Error) {

@@ -15,12 +15,12 @@ patches:
         path: "/spec/url/basePath"
         value: "/rogfk-no"
       - op: add
-        path: "/spec/env/-"
+        path: "/spec/env/0"
         value:
           name: BASE_PATH
           value: "/rogfk-no"
       - op: add
-        path: "/spec/env/-"
+        path: "/spec/env/1"
         value:
           name: CONSENT_API_URL
           value: http://fint-samtykke-service-backend:8080
