@@ -1,6 +1,6 @@
 import type { Route } from './+types/home';
 import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent';
-import { Alert, BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Heading, HStack, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import type { Consent } from '~/utils/types';
 import { useSubmit, type ActionFunctionArgs, useRouteError } from 'react-router';
@@ -32,9 +32,14 @@ export async function loader({ request }: Route.LoaderArgs) {
         const consents = await fetchConsent(request);
         return { consents };
     } catch (error) {
-        throw new Response(error instanceof Error ? error.message : 'Unknown error occurred', {
-            status: 500,
-        });
+        throw new Response(
+            error instanceof Error
+                ? error.message
+                : 'En ukjent feil oppstod ved henting av samtykker.',
+            {
+                status: 500,
+            }
+        );
     }
 }
 
@@ -65,16 +70,27 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
 export default Home;
 
 export async function action({ request }: ActionFunctionArgs) {
-    const formData = await request.formData();
-    const processingId = String(formData.get('processingId'));
-    const consentId = String(formData.get('consentId'));
-    const isActive = String(formData.get('isActive'));
-    if (processingId) {
-        if (request.method === 'POST') {
-            createConsent(request, processingId);
-        } else if (request.method === 'PUT') {
-            updateConsent(request, processingId, consentId, isActive);
+    try {
+        const formData = await request.formData();
+        const processingId = String(formData.get('processingId'));
+        const consentId = String(formData.get('consentId'));
+        const isActive = String(formData.get('isActive'));
+        if (processingId) {
+            if (request.method === 'POST') {
+                await createConsent(request, processingId);
+            } else if (request.method === 'PUT') {
+                await updateConsent(request, processingId, consentId, isActive);
+            }
         }
+    } catch (error) {
+        throw new Response(
+            error instanceof Error
+                ? error.message
+                : `En ukjent feil oppstod ved ${request.method === 'POST' ? 'oppretting' : 'endring'} av samtykke.`,
+            {
+                status: 500,
+            }
+        );
     }
 }
 
@@ -85,13 +101,10 @@ export function ErrorBoundary() {
             <Alert variant="error">
                 Det oppsto en feil med følgende melding:
                 {!!error ? (
-                    <ul>
-                        <li>Name: {error.name}</li>
-                        <li>Message: {error.message}</li>
-                        <li>Data: {(error as any).data}</li>
-                        <li>Cause: {(error as any).cause}</li>
-                        <li>Status: {(error as any).cause}</li>
-                    </ul>
+                    <HStack gap="4">
+                        <div>{(error as any).data}</div>
+                        <div>{error.message}</div>
+                    </HStack>
                 ) : (
                     <div>Ukjent feil</div>
                 )}
