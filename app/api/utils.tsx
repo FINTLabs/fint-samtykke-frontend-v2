@@ -21,21 +21,22 @@ export const fetchData = async (
                 : error instanceof Error
                   ? error.message
                   : 'Ukjent feil';
-        throw new Response('Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen.', {
-            status: 500,
-            statusText: statusText,
-        });
+        throw new Error(
+            `Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen. (${statusText})`
+        );
     }
 };
 
 export const handleResponse = async (response: Response, errorMessage: string): Promise<any> => {
     if (response.ok) return response.json();
-    if (response.status === 403)
+    if (response.status === 403) {
         throw new Error(
             'Det ser ut som om du mangler rettigheter til den dataen du prøver å hente.'
         );
-    if (response.status === 401)
+    }
+    if (response.status === 401) {
         throw new Error('Påloggingen din er utløpt, vennligst logg inn på nytt.');
+    }
     throw new Error(`${response.status} - ${response.statusText}`);
 };
 

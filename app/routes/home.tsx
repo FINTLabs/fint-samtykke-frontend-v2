@@ -28,8 +28,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-    const consents = await fetchConsent(request);
-    return { consents };
+    try {
+        const consents = await fetchConsent(request);
+        return { consents };
+    } catch (error) {
+        throw new Response(error instanceof Error ? error.message : 'Unknown error occurred', {
+            status: 500,
+        });
+    }
 }
 
 const Home = ({ loaderData }: Route.ComponentProps) => {
@@ -73,17 +79,18 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export function ErrorBoundary() {
-    const error = useRouteError();
+    const error: any = useRouteError();
     return (
         <Box paddingBlock="8">
             <Alert variant="error">
                 Det oppsto en feil med følgende melding:
-                {error instanceof Error ? (
+                {!!error ? (
                     <ul>
-                        <li>{error.name}</li>
-                        <li>{error.message}</li>
-                        <li>{(error as any).data}</li>
-                        <li>{(error as any).cause}</li>
+                        <li>Name: {error.name}</li>
+                        <li>Message: {error.message}</li>
+                        <li>Data: {(error as any).data}</li>
+                        <li>Cause: {(error as any).cause}</li>
+                        <li>Status: {(error as any).cause}</li>
                     </ul>
                 ) : (
                     <div>Ukjent feil</div>
