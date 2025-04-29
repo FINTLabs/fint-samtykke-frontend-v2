@@ -8,10 +8,7 @@ export const fetchData = async (
     try {
         logger.info(`GET request to url:`, url);
         const response = await fetch(url, {
-            headers: {
-                ...request.headers,
-                Authorization: `Bearer ${request.headers.get('Authorization')}`,
-            },
+            headers: request.headers,
         });
         return handleResponse(response, defaultErrorMessage);
     } catch (error) {
