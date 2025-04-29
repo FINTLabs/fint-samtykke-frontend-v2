@@ -78,10 +78,11 @@ export function ErrorBoundary({ error }: { error: unknown }) {
             <Alert variant="error">
                 Det oppsto en feil med følgende melding:
                 {error instanceof Error ? (
-                    <>
-                        <div>{error.message}</div>
-                        <div>{(error as any).data}</div>
-                    </>
+                    <li>
+                        <ul>{error.name}</ul>
+                        <ul>{error.message}</ul>
+                        <ul>{(error as any).data}</ul>
+                    </li>
                 ) : (
                     <div>Ukjent feil</div>
                 )}
