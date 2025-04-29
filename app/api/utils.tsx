@@ -21,6 +21,7 @@ export const fetchData = async (
                 : error instanceof Error
                   ? error.message
                   : 'Ukjent feil';
+        logger.info('Error fetching data:', url, error, statusText);
         throw new Error(
             `Kunne ikke kontakte serveren. Vennligst vent litt og prøv igjen. (${statusText})`
         );
@@ -30,13 +31,18 @@ export const fetchData = async (
 export const handleResponse = async (response: Response, errorMessage: string): Promise<any> => {
     if (response.ok) return response.json();
     if (response.status === 403) {
+        logger.info('403 Forbidden:', response.statusText);
         throw new Error(
             'Det ser ut som om du mangler rettigheter til den dataen du prøver å hente.'
         );
     }
     if (response.status === 401) {
+        logger.info('401 Unauthorized:', response.statusText);
+
         throw new Error('Påloggingen din er utløpt, vennligst logg inn på nytt.');
     }
+    logger.info('Error response:', response.status, response.statusText);
+
     throw new Error(`${response.status} - ${response.statusText}`);
 };
 
