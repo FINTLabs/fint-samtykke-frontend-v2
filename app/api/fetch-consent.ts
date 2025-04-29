@@ -6,9 +6,9 @@ import logger from '~/api/logger';
 
 export const fetchConsent = async (request: Request): Promise<Consent[]> => {
     //TODO: remove this
-    logger.info('fetchConsent', `${CONSENT_API_URL}${BASE_PATH}/api/consents`);
+    logger.info('fetchConsent', `${CONSENT_API_URL}${BASE_PATH}/consents`);
     return fetchData(
-        `${CONSENT_API_URL}${BASE_PATH}/api/consents`,
+        `${CONSENT_API_URL}${BASE_PATH}/consents`,
         request,
         'En feil oppstod når vi hentet informasjon om deg, vennligst sjekk at du er logget inn.'
     );
@@ -16,9 +16,9 @@ export const fetchConsent = async (request: Request): Promise<Consent[]> => {
 
 export const createConsent = async (reqest: Request, processingId: string): Promise<Consent> => {
     //TODO: remove this
-    logger.info('createConsent', `${CONSENT_API_URL}${BASE_PATH}/api/consents/${processingId}`);
+    logger.info('createConsent', `${CONSENT_API_URL}${BASE_PATH}/consents/${processingId}`);
     const response = await sendRequest({
-        url: `${CONSENT_API_URL}${BASE_PATH}/api/consents/${processingId}`,
+        url: `${CONSENT_API_URL}${BASE_PATH}/consents/${processingId}`,
         method: 'POST',
         token: reqest.headers.get('Authorization'),
     });
@@ -35,10 +35,10 @@ export const updateConsent = async (
     //TODO: remove this
     logger.info(
         'updateConsent',
-        `${CONSENT_API_URL}${BASE_PATH}/api/consents/${consentId}/${processingId}/${isActive}`
+        `${CONSENT_API_URL}${BASE_PATH}/consents/${consentId}/${processingId}/${isActive}`
     );
     const response = await sendRequest({
-        url: `${CONSENT_API_URL}${BASE_PATH}/api/consents/${consentId}/${processingId}/${isActive}`,
+        url: `${CONSENT_API_URL}${BASE_PATH}/consents/${consentId}/${processingId}/${isActive}`,
         method: 'PUT',
         token: reqest.headers.get('Authorization'),
     });
