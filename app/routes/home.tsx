@@ -3,7 +3,7 @@ import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent'
 import { Alert, BodyShort, Box, Heading, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import type { Consent } from '~/utils/types';
-import { useSubmit, type ActionFunctionArgs } from 'react-router';
+import { useSubmit, type ActionFunctionArgs, useRouteError } from 'react-router';
 import React from 'react';
 
 export function meta({}: Route.MetaArgs) {
@@ -72,17 +72,19 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 }
 
-export function ErrorBoundary({ error }: { error: unknown }) {
+export function ErrorBoundary() {
+    const error = useRouteError();
     return (
         <Box paddingBlock="8">
             <Alert variant="error">
                 Det oppsto en feil med følgende melding:
                 {error instanceof Error ? (
-                    <li>
-                        <ul>{error.name}</ul>
-                        <ul>{error.message}</ul>
-                        <ul>{(error as any).data}</ul>
-                    </li>
+                    <ul>
+                        <li>{error.name}</li>
+                        <li>{error.message}</li>
+                        <li>{(error as any).data}</li>
+                        <li>{(error as any).cause}</li>
+                    </ul>
                 ) : (
                     <div>Ukjent feil</div>
                 )}
