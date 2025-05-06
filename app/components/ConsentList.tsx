@@ -1,5 +1,6 @@
 import type { Consent } from '~/utils/types';
-import { BodyShort, Box, HStack, Switch, VStack } from '@navikt/ds-react';
+import { BodyShort, Box, HStack, VStack } from '@navikt/ds-react';
+import { ConsentSwitch } from '~/components/ConsentSwitch';
 
 export const ConsentList = ({
     consents,
@@ -31,14 +32,12 @@ export const ConsentList = ({
                                 </BodyShort>
                             </VStack>
                             <Box style={{ boxSizing: 'border-box' }} width={'50px'}>
-                                <Switch
-                                    size="small"
+                                <ConsentSwitch
                                     value={consent.systemIdValue}
                                     checked={activeConsentIds.includes(consent.systemIdValue)}
                                     onChange={(e) => handleChange(e, consent)}
-                                    hideLabel={true}>
-                                    {consent.processorName}
-                                </Switch>
+                                    label={consent.processorName}
+                                />
                             </Box>
                         </HStack>
                         <BodyShort>{consent.processing.formal}</BodyShort>

@@ -6,27 +6,6 @@ import { useSubmit, type ActionFunctionArgs, useRouteError } from 'react-router'
 import React from 'react';
 import { Consents } from '~/components/Consents';
 
-export function meta({}: Route.MetaArgs) {
-    return [
-        {
-            charset: 'utf-8',
-        },
-        {
-            name: 'viewport',
-            content: 'width=device-width,initial-scale=1',
-        },
-        { title: 'FINT Samtykke' },
-        {
-            property: 'og:title',
-            content: 'FINT Samtykke',
-        },
-        {
-            name: 'description',
-            content: 'FINT Samtykke',
-        },
-    ];
-}
-
 export async function loader({ request }: Route.LoaderArgs) {
     try {
         const consents = await fetchConsent(request);
@@ -53,9 +32,9 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
         formData.append('consentId', consent.systemIdValue);
         formData.append('isActive', String(isActive));
         if (consent.expirationDate === null) {
-            submit(formData, { method: 'post' });
+            submit(formData, { method: 'post', action: '/', navigate: false });
         } else {
-            submit(formData, { method: 'put' });
+            submit(formData, { method: 'put', action: '/', navigate: false });
         }
     };
     return (
@@ -80,9 +59,9 @@ export async function action({ request }: ActionFunctionArgs) {
         const isActive = String(formData.get('isActive'));
         if (processingId) {
             if (request.method === 'POST') {
-                await createConsent(request, processingId);
+                return await createConsent(request, processingId);
             } else if (request.method === 'PUT') {
-                await updateConsent(request, processingId, consentId, isActive);
+                return await updateConsent(request, processingId, consentId, isActive);
             }
         }
     } catch (error) {

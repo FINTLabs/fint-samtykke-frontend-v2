@@ -1,5 +1,6 @@
 import type { Consent } from '~/utils/types';
-import { Switch, Table } from '@navikt/ds-react';
+import { Table } from '@navikt/ds-react';
+import { ConsentSwitch } from '~/components/ConsentSwitch';
 
 export const ConsentTable = ({
     consents,
@@ -27,14 +28,12 @@ export const ConsentTable = ({
                         <Table.DataCell>{consent.personalDataName}</Table.DataCell>
                         <Table.DataCell>{consent.processing.formal}</Table.DataCell>
                         <Table.DataCell>
-                            <Switch
-                                size="small"
+                            <ConsentSwitch
                                 value={consent.systemIdValue}
                                 checked={activeConsentIds.includes(consent.systemIdValue)}
                                 onChange={(e) => handleChange(e, consent)}
-                                hideLabel={true}>
-                                {consent.processorName}
-                            </Switch>
+                                label={consent.processorName}
+                            />
                         </Table.DataCell>
                     </Table.Row>
                 ))}
