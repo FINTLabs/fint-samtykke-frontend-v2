@@ -1,10 +1,11 @@
 import type { Route } from './+types/home';
 import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent';
-import { Alert, BodyShort, Box, Heading, HStack, VStack } from '@navikt/ds-react';
+import { Alert, BodyShort, Box, Heading, Hide, HStack, Show, VStack } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import type { Consent } from '~/utils/types';
 import { useSubmit, type ActionFunctionArgs, useRouteError } from 'react-router';
 import React from 'react';
+import { ConsentList } from '~/components/ConsentList';
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -61,8 +62,16 @@ const Home = ({ loaderData }: Route.ComponentProps) => {
     return (
         <VStack gap={'4'} paddingBlock={'12'}>
             <Heading size="large">Velkommen til FINT Samtykke</Heading>
-            <BodyShort> Denne siden gir deg oversikt over dine samtykker</BodyShort>
-            <ConsentTable consents={consents} handleSubmit={handleSubmit} />
+            <BodyShort>
+                Denne siden gir deg oversikt over dine samtykker. Du kan gi og trekke tilbake
+                samtykker her.
+            </BodyShort>
+            <Hide below="md">
+                <ConsentTable consents={consents} handleSubmit={handleSubmit} />
+            </Hide>
+            <Show below="md">
+                <ConsentList consents={consents} handleSubmit={handleSubmit} />
+            </Show>
         </VStack>
     );
 };

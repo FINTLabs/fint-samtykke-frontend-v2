@@ -204,10 +204,10 @@ const consents: Consent[] = [
 // @ts-ignore
 export const mockServer = setupServer(
     ...[
-        http.get('http://localhost:8080/api/consents', () => {
+        http.get('http://localhost:8080/beta/fintlabs-no/consents', () => {
             return HttpResponse.json<Consent[]>(consents);
         }),
-        http.post('http://localhost:8080/api/consents/:processingId', (resolver) => {
+        http.post('http://localhost:8080/beta/fintlabs-no/consents/:processingId', (resolver) => {
             const { processingId } = resolver.params;
             const consent = consents.find(
                 (c) => c.processing.systemId.identifikatorverdi === processingId
@@ -220,7 +220,7 @@ export const mockServer = setupServer(
             }
         }),
         http.put(
-            'http://localhost:8080/api/consents/:systemIdValue/:processingId/:isActive',
+            'http://localhost:8080/beta/fintlabs-no/consents/:systemIdValue/:processingId/:isActive',
             (resolver) => {
                 const { processingId, isActive } = resolver.params;
                 const consent = consents.find(

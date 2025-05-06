@@ -41,11 +41,12 @@ export const ConsentTable = ({
                         <Table.DataCell>{consent.processing.formal}</Table.DataCell>
                         <Table.DataCell>
                             <Switch
+                                size="small"
                                 value={consent.systemIdValue}
                                 checked={activeConsents.includes(consent.systemIdValue)}
                                 onChange={(e) => handleChange(e, consent)}
                                 hideLabel={true}>
-                                Samtykke
+                                {consent.processorName}
                             </Switch>
                         </Table.DataCell>
                     </Table.Row>

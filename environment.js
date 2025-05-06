@@ -9,3 +9,5 @@ export const CONSENT_API_URL = isDevelopment
     ? 'http://localhost:8080'
     : process.env.CONSENT_API_URL || 'http://localhost:8064';
 export const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
+
+export const VITE_USE_MOCKS = false;
