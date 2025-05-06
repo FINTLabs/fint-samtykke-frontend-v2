@@ -5,16 +5,21 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { BASE_PATH } from './environment';
 
 function mockServerPlugin() {
+    console.log('VITE_USE_MOCKS:', process.env.VITE_USE_MOCKS);
     return {
         name: 'mock-server-plugin',
         // @ts-ignore
         configureServer(server) {
-            if (process.env.USE_MOCKS === 'true') {
-                // @ts-ignore
-                import('./mock/mockServer.js').then(({ mockServer }) => {
-                    mockServer.listen();
-                    console.log('Mock server started');
-                });
+            console.log('configureServer called');
+            if (process.env.VITE_USE_MOCKS === 'true') {
+                import('./mock/mockServer.js')
+                    .then(({ mockServer }) => {
+                        mockServer.listen();
+                        console.log('Mock server started');
+                    })
+                    .catch((error) => {
+                        console.error('Failed to start mock server:', error);
+                    });
             }
         },
     };

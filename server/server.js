@@ -6,8 +6,6 @@ import process from 'node:process';
 import { createRequestHandler } from '@react-router/express';
 import { BASE_PATH, PORT } from '../environment.js';
 
-/*const PORT = process.env.PORT || '3000';
-const BASE_PATH = process.env.BASE_PATH || '/';*/
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
 const logger = log4js.getLogger();
@@ -51,7 +49,7 @@ if (viteDevServer) {
 }
 app.use(`${BASE_PATH.replace(/\/$/, '')}`, express.static('build/client', { maxAge: '1h' }));
 app.use(express.static('public'));
-app.all(`${BASE_PATH.replace(/\/$/, '')}(/*)?`, createRequestHandler({ build }));
+app.all(`${BASE_PATH.replace(/\/$/, '')}/*`, createRequestHandler({ build }));
 
 logger.info('BASE_PATH', BASE_PATH);
 

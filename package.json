@@ -2,14 +2,9 @@
     "name": "my-react-router-app",
     "private": true,
     "type": "module",
-    "overrides": {
-        "react": "$react"
-    },
     "scripts": {
         "build": "cross-env NODE_ENV=production react-router build",
         "dev": "react-router dev",
-        "dev:server": "node server/server.js",
-        "dev:mock": "cross-env USE_MOCKS=true NODE_ENV=production node server/server.js",
         "start": "cross-env NODE_ENV=production node server/server.js",
         "typecheck": "react-router typegen && tsc",
         "format": "prettier --write .",

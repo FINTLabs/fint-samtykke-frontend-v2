@@ -1,28 +1,15 @@
 import type { Consent } from '~/utils/types';
 import { Switch, Table } from '@navikt/ds-react';
-import { type ChangeEvent, useState } from 'react';
 
 export const ConsentTable = ({
     consents,
-    handleSubmit,
+    handleChange,
+    activeConsentIds,
 }: {
     consents: Consent[];
-    handleSubmit: (consent: Consent, isActive: boolean) => void;
+    handleChange: (event: any, consent: Consent) => void;
+    activeConsentIds: string[];
 }) => {
-    const [activeConsents, setActiveConsents] = useState<string[]>(
-        consents.filter((x) => x.active).map((x) => x.systemIdValue)
-    );
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>, consent: Consent) => {
-        const checkedValue = e.target.value;
-        const isChecked = e.target.checked;
-        const newActiveConsents = isChecked
-            ? [...activeConsents, checkedValue]
-            : activeConsents.filter((x) => x !== checkedValue);
-        setActiveConsents(newActiveConsents);
-        handleSubmit(consent, isChecked);
-    };
-
     return (
         <Table>
             <Table.Header>
@@ -41,11 +28,12 @@ export const ConsentTable = ({
                         <Table.DataCell>{consent.processing.formal}</Table.DataCell>
                         <Table.DataCell>
                             <Switch
+                                size="small"
                                 value={consent.systemIdValue}
-                                checked={activeConsents.includes(consent.systemIdValue)}
+                                checked={activeConsentIds.includes(consent.systemIdValue)}
                                 onChange={(e) => handleChange(e, consent)}
                                 hideLabel={true}>
-                                Samtykke
+                                {consent.processorName}
                             </Switch>
                         </Table.DataCell>
                     </Table.Row>
