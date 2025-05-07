@@ -6,10 +6,12 @@ export const ConsentList = ({
     consents,
     handleChange,
     activeConsentIds,
+    loading,
 }: {
     consents: Consent[];
     handleChange: (event: any, consent: Consent) => void;
     activeConsentIds: string[];
+    loading?: string;
 }) => {
     return (
         <VStack gap={'4'}>
@@ -33,6 +35,7 @@ export const ConsentList = ({
                             </VStack>
                             <Box style={{ boxSizing: 'border-box' }} width={'50px'}>
                                 <ConsentSwitch
+                                    loading={loading === consent.systemIdValue}
                                     value={consent.systemIdValue}
                                     checked={activeConsentIds.includes(consent.systemIdValue)}
                                     onChange={(e) => handleChange(e, consent)}

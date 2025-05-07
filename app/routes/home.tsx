@@ -2,9 +2,9 @@ import type { Route } from './+types/home';
 import { createConsent, fetchConsent, updateConsent } from '~/api/fetch-consent';
 import { Alert, BodyShort, Box, Heading, HStack, VStack } from '@navikt/ds-react';
 import type { Consent } from '~/utils/types';
-import { useSubmit, type ActionFunctionArgs, useRouteError, useActionData } from 'react-router';
+import { useSubmit, type ActionFunctionArgs, useRouteError } from 'react-router';
 import { Consents } from '~/components/Consents';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export async function loader({ request }: Route.LoaderArgs) {
     try {
@@ -22,22 +22,10 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
 }
 
-const Home = ({ loaderData, actionData }: Route.ComponentProps) => {
+const Home = ({ loaderData }: Route.ComponentProps) => {
     const { consents } = loaderData;
     const submit = useSubmit();
-    const [loading, setLoading] = useState<string | undefined>(undefined);
-
-    useEffect(() => {
-        console.log('Data from action:', actionData);
-    }, [actionData]);
-
-    useEffect(() => {
-        console.log('Loader data length:', loaderData?.consents.length);
-        console.log(
-            'Loader data:',
-            loaderData?.consents?.map((consent: Consent) => consent.active)
-        );
-    }, [loaderData]);
+    const [loading, setLoading] = useState<string>();
 
     const handleSubmit = (consent: Consent, isActive: boolean) => {
         setLoading(consent.systemIdValue);
@@ -47,22 +35,15 @@ const Home = ({ loaderData, actionData }: Route.ComponentProps) => {
         formData.append('isActive', String(isActive));
         submit(formData, {
             method: consent.expirationDate === null ? 'POST' : 'PUT',
-        }).then((res) => {
-            console.log('Submit return:', res);
+        }).then(() => {
             setLoading(undefined);
         });
     };
 
     return (
         <VStack gap={'4'} paddingBlock={'12'}>
-            <BodyShort>
-                Status: {actionData?.state}: {actionData?.active}
-            </BodyShort>
             <Heading size="large">Velkommen til FINT Samtykke</Heading>
-            <BodyShort>
-                Denne siden gir deg oversikt over dine samtykker. Du kan gi og trekke tilbake
-                samtykker her.
-            </BodyShort>
+            <BodyShort>Her kan du administrere dine samtykker.</BodyShort>
             <Consents consents={consents} handleSubmit={handleSubmit} loading={loading} />
         </VStack>
     );
@@ -73,26 +54,19 @@ export default Home;
 export async function action({ request }: ActionFunctionArgs) {
     try {
         const formData = await request.formData();
-        const processingId = String(formData.get('processingId'));
-        const consentId = String(formData.get('consentId'));
-        const isActive = String(formData.get('isActive'));
+        const processingId = formData.get('processingId')?.toString();
+        const consentId = formData.get('consentId')?.toString();
+        const isActive = formData.get('isActive')?.toString();
 
-        console.log('Action triggered with:', { processingId, consentId, isActive });
-
-        if (processingId) {
-            if (request.method === 'POST') {
-                const res = await createConsent(request, processingId);
-                console.log('POST result:', res);
-                return { systemIdValue: res.systemIdValue, state: 'created', active: res.active };
-            } else if (request.method === 'PUT') {
-                const res = await updateConsent(request, processingId, consentId, isActive);
-                console.log('PUT result:', res);
-                return { systemIdValue: res.systemIdValue, state: 'updated', active: res.active };
-            }
+        if (request.method === 'POST' && processingId) {
+            const res = await createConsent(request, processingId);
+            return { systemIdValue: res.systemIdValue, state: 'created', active: res.active };
+        } else if (request.method === 'PUT' && processingId && consentId && isActive) {
+            const res = await updateConsent(request, processingId, consentId, isActive);
+            return { systemIdValue: res.systemIdValue, state: 'updated', active: res.active };
         }
-        return { error: 'Invalid processingId or unsupported method' };
+        return { error: 'Invalid data or unsupported method' };
     } catch (error) {
-        console.error('Action error:', error);
         return {
             error:
                 error instanceof Error

@@ -5,7 +5,6 @@ import { fetchData, handleResponse, sendRequest } from '~/api/utils';
 import logger from '~/api/logger';
 
 export const fetchConsent = async (request: Request): Promise<Consent[]> => {
-    console.log('fetchConsent');
     try {
         return fetchData(
             `${CONSENT_API_URL}${BASE_PATH}/consents`,
@@ -19,7 +18,6 @@ export const fetchConsent = async (request: Request): Promise<Consent[]> => {
 };
 
 export const createConsent = async (request: Request, processingId: string): Promise<Consent> => {
-    console.log('createConsent');
     try {
         const response = await sendRequest({
             url: `${CONSENT_API_URL}${BASE_PATH}/consents/${processingId}`,
@@ -40,7 +38,6 @@ export const updateConsent = async (
     consentId: string,
     isActive: string
 ): Promise<Consent> => {
-    console.log('updateConsent');
     try {
         const response = await sendRequest({
             url: `${CONSENT_API_URL}${BASE_PATH}/consents/${consentId}/${processingId}/${isActive}`,

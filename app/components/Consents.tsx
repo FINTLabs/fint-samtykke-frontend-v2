@@ -2,7 +2,7 @@ import type { Consent } from '~/utils/types';
 import { Hide, Show } from '@navikt/ds-react';
 import { ConsentTable } from '~/components/ConsentTable';
 import { ConsentList } from '~/components/ConsentList';
-import React, { type ChangeEvent, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 export const Consents = ({
     consents,
@@ -13,30 +13,22 @@ export const Consents = ({
     handleSubmit: (consent: Consent, isActive: boolean) => void;
     loading?: string;
 }) => {
-    const memoizedActiveConsents = useMemo(
+    const activeConsentIds = useMemo(
         () => consents.filter((x) => x.active).map((x) => x.systemIdValue),
         [consents]
     );
-    const [activeConsents, setActiveConsents] = useState<string[]>(
-        consents.filter((x) => x.active).map((x) => x.systemIdValue)
-    );
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>, consent: Consent) => {
-        const checkedValue = e.target.value;
-        const isChecked = e.target.checked;
-        /*        const newActiveConsents = isChecked
-            ? [...activeConsents, checkedValue]
-            : activeConsents.filter((x) => x !== checkedValue);
-        setActiveConsents(newActiveConsents);*/
-        handleSubmit(consent, isChecked);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, consent: Consent) => {
+        handleSubmit(consent, e.target.checked);
     };
+
     return (
         <>
             <Hide below="md">
                 <ConsentTable
                     consents={consents}
                     handleChange={handleChange}
-                    activeConsentIds={memoizedActiveConsents}
+                    activeConsentIds={activeConsentIds}
                     loading={loading}
                 />
             </Hide>
@@ -44,7 +36,8 @@ export const Consents = ({
                 <ConsentList
                     consents={consents}
                     handleChange={handleChange}
-                    activeConsentIds={memoizedActiveConsents}
+                    activeConsentIds={activeConsentIds}
+                    loading={loading}
                 />
             </Show>
         </>

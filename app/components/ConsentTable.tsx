@@ -1,7 +1,6 @@
 import type { Consent } from '~/utils/types';
 import { Table } from '@navikt/ds-react';
 import { ConsentSwitch } from '~/components/ConsentSwitch';
-import { useState } from 'react';
 
 export const ConsentTable = ({
     consents,
