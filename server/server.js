@@ -48,7 +48,7 @@ if (viteDevServer) {
     app.use(viteDevServer.middlewares);
 }
 app.use(`${BASE_PATH.replace(/\/$/, '')}`, express.static('build/client', { maxAge: '1h' }));
-app.use(express.static('public'));
+app.use(`/`, express.static('public'));
 app.all(`${BASE_PATH.replace(/\/$/, '')}/*`, createRequestHandler({ build }));
 
 logger.info('BASE_PATH', BASE_PATH);

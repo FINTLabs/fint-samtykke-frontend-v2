@@ -21,8 +21,29 @@ import Header from '~/components/Header';
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: navStyles, type: 'text/css' },
     { rel: 'stylesheet', href: novariSTyles, type: 'text/css' },
-    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    { rel: 'icon', type: 'image/svg+xml', href: `./favicon.svg` },
 ];
+
+export function meta({}) {
+    return [
+        {
+            charset: 'utf-8',
+        },
+        {
+            name: 'viewport',
+            content: 'width=device-width,initial-scale=1',
+        },
+        { title: 'FINT Samtykke' },
+        {
+            property: 'og:title',
+            content: 'FINT Samtykke',
+        },
+        {
+            name: 'description',
+            content: 'FINT Samtykke',
+        },
+    ];
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
     return (

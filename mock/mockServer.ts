@@ -204,31 +204,39 @@ const consents: Consent[] = [
 // @ts-ignore
 export const mockServer = setupServer(
     ...[
-        http.get('http://localhost:8080/beta/fintlabs-no/consents', () => {
+        http.get('http://localhost:8080/beta/fintlabs-no/consents', async () => {
+            await new Promise((resolve) => setTimeout(resolve, 500));
             return HttpResponse.json<Consent[]>(consents);
         }),
-        http.post('http://localhost:8080/beta/fintlabs-no/consents/:processingId', (resolver) => {
-            const { processingId } = resolver.params;
-            const consent = consents.find(
-                (c) => c.processing.systemId.identifikatorverdi === processingId
-            );
+        http.post(
+            'http://localhost:8080/beta/fintlabs-no/consents/:processingId',
+            async (resolver) => {
+                const { processingId } = resolver.params;
+                const consent = consents.find(
+                    (c) => c.processing.systemId.identifikatorverdi === processingId
+                );
 
-            if (consent) {
-                return HttpResponse.json(consent, { status: 201 });
-            } else {
-                return HttpResponse.json({ error: 'Consent not found' }, { status: 404 });
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                if (consent) {
+                    return HttpResponse.json(consent, { status: 200 });
+                } else {
+                    return HttpResponse.json({ error: 'Consent not found' }, { status: 404 });
+                }
             }
-        }),
+        ),
         http.put(
             'http://localhost:8080/beta/fintlabs-no/consents/:systemIdValue/:processingId/:isActive',
-            (resolver) => {
+            async (resolver) => {
                 const { processingId, isActive } = resolver.params;
                 const consent = consents.find(
                     (c) => c.processing.systemId.identifikatorverdi === processingId
                 );
 
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
                 if (consent) {
-                    return HttpResponse.json({ ...consent, active: isActive }, { status: 201 });
+                    return HttpResponse.json({ ...consent, active: isActive }, { status: 200 });
                 } else {
                     return HttpResponse.json({ error: 'Consent not found' }, { status: 404 });
                 }

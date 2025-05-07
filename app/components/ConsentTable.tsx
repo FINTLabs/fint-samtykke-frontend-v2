@@ -1,15 +1,18 @@
 import type { Consent } from '~/utils/types';
 import { Table } from '@navikt/ds-react';
 import { ConsentSwitch } from '~/components/ConsentSwitch';
+import { useState } from 'react';
 
 export const ConsentTable = ({
     consents,
     handleChange,
     activeConsentIds,
+    loading,
 }: {
     consents: Consent[];
     handleChange: (event: any, consent: Consent) => void;
     activeConsentIds: string[];
+    loading?: string;
 }) => {
     return (
         <Table>
@@ -29,6 +32,7 @@ export const ConsentTable = ({
                         <Table.DataCell>{consent.processing.formal}</Table.DataCell>
                         <Table.DataCell>
                             <ConsentSwitch
+                                loading={loading === consent.systemIdValue}
                                 value={consent.systemIdValue}
                                 checked={activeConsentIds.includes(consent.systemIdValue)}
                                 onChange={(e) => handleChange(e, consent)}
