@@ -21,7 +21,7 @@
         "express-prometheus-middleware": "^1.2.0",
         "isbot": "^5.1.25",
         "log4js": "^6.9.1",
-        "morgan": "^1.10.0",
+        "morgan": "^1.10.1",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "react-router": "^7.1.5"
