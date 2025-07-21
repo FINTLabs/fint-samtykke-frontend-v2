@@ -10,6 +10,7 @@ on:
         type: choice
         options:
           - rogfk-no
+          - agderfk-no
       environment:
         description: 'Select environment'
         required: true
