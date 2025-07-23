@@ -33,6 +33,9 @@ patches:
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/agderfk-no"
+      - op: replace
+        path: "/spec/ingress/hostname"
+        value: "samtykke.novari.no"
     target:
       kind: Application
       name: fint-samtykke-frontend-v2
