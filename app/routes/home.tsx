@@ -78,6 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export function ErrorBoundary() {
     const error: any = useRouteError();
+    console.error(error);
     return (
         <Box paddingBlock="8">
             <Alert variant="error">

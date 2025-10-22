@@ -80,6 +80,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
     let message = 'Oops!';
     let details = 'An unexpected error occurred.';
     let stack: string | undefined;
+    console.error('Error at root:', error);
 
     if (isRouteErrorResponse(error)) {
         if (error.status === 404) {
