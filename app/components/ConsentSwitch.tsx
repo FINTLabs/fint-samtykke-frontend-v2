@@ -1,5 +1,5 @@
 import { Switch } from '@navikt/ds-react';
-import React, { type ChangeEvent, useEffect, useState } from 'react';
+import React, { type ChangeEvent } from 'react';
 
 export const ConsentSwitch = ({
     value,
