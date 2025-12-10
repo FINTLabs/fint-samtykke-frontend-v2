@@ -13,7 +13,7 @@
     "dependencies": {
         "@navikt/ds-css": "^7.18.0",
         "@navikt/ds-react": "^7.18.0",
-        "@react-router/express": "7.9.4",
+        "@react-router/express": "7.9.6",
         "@react-router/node": "7.9.4",
         "@react-router/serve": "7.9.4",
         "express": "4.22.0",
