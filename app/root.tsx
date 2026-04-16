@@ -27,7 +27,7 @@ export const links: LinksFunction = () => [
 export function meta({}) {
     return [
         {
-            charset: 'utf-8',
+            charSet: 'utf-8',
         },
         {
             name: 'viewport',
